@@ -51,7 +51,7 @@ function Button({
         e.currentTarget.style.boxShadow = OUTLINE_SHADOW_DEFAULT
       }}
       className={classNames(
-        "font-medium text-center cursor-pointer select-none transition-all  duration-200",
+        "font-medium text-center cursor-pointer select-none transition-all  duration-200 w-full",
         // WIDTH
         { "w-full": fullWidth },
         // SIZE

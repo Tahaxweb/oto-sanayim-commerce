@@ -1,6 +1,7 @@
 import localFont from 'next/font/local'
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from '@/components/layout/Navbar';
 
 const satoshi = localFont({
   src: [
@@ -29,6 +30,7 @@ export default function RootLayout({
       className={`${satoshi.variable} h-full antialiased`}
     >
       <body className={`${satoshi.className} min-h-full flex flex-col`}>
+        <Navbar/>
         {children}
       </body>
     </html>
