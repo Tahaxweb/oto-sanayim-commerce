@@ -10,10 +10,10 @@ const NAV_ITEMS = [
   {
     label: 'Ürünler',
     dropdown: [
-      { label: 'Motor & Şanzıman', href: '/kategori/motor' },
-      { label: 'Fren Sistemi', href: '/kategori/fren' },
-      { label: 'Elektrik & Aydınlatma', href: '/kategori/elektrik' },
-      { label: 'Karoser & Dış', href: '/kategori/karoser' },
+      { label: 'Motor & Şanzıman', href: '/urunler/motor' },
+      { label: 'Fren Sistemi', href: '/urunler/fren' },
+      { label: 'Elektrik & Aydınlatma', href: '/urunler/elektrik' },
+      { label: 'Karoser & Dış', href: '/urunler/karoser' },
     ],
   },
   {
@@ -24,7 +24,7 @@ const NAV_ITEMS = [
       { label: 'Toptancılar', href: '/kurumsal/toptancilar' },
     ],
   },
-    { label: 'İletişim', href: '/contact' },
+    { label: 'İletişim', href: '/iletisim' },
 ]
 
 function Navbar() {

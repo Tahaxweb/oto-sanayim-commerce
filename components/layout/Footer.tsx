@@ -122,11 +122,10 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <Image
-              src="/images/logos/primary-logo.svg"
+              src="/images/logos/orange-white-logo.svg"
               alt="OtoSanayim"
               width={150}
               height={50}
-              className="brightness-0 invert"
             />
             <p className="text-sm text-gray-400 leading-relaxed">
               Türkiye'nin en güvenilir yedek parça platformu. 
