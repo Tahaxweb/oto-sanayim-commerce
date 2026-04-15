@@ -139,7 +139,7 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
         href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center justify-center gap-3 w-full h-14 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40"
+        className="group flex items-center justify-center gap-3 w-full h-14 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all duration-300 "
       >
         <i className="ri-whatsapp-line text-2xl"></i>
         <span>WhatsApp ile Sipariş Ver</span>
