@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         
         {/* Popüler badge */}
         {product.populer && (
-          <span className="absolute top-3 right-3 px-3 py-1 bg-orange-600 text-white text-xs font-semibold rounded-full z-10">
+          <span className="absolute top-3 right-3 px-3 py-1 bg-[#FF3C00] text-white text-xs font-semibold rounded-full z-10">
             Popüler
           </span>
         )}
@@ -70,7 +70,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* İçerik */}
       <div className="py-5 space-y-2">
         {/* Ürün Kodu */}
-        <p className="text-xs sm:text-sm font-bold text-orange-600 tracking-wider uppercase font-mono">
+        <p className="text-xs sm:text-sm font-bold text-[#FF3C00] tracking-wider uppercase font-mono">
           {productCode}
         </p>
 
@@ -87,7 +87,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Fiyat */}
         <div className="pt-3 border-t border-gray-100 mt-1">
-          <p className="text-2xl font-bold text-orange-600">
+          <p className="text-2xl font-bold text-[#FF3C00]">
             {product.fiyat.toLocaleString('tr-TR')} ₺
           </p>
         </div>

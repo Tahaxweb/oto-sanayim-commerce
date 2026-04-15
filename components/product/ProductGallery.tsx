@@ -52,7 +52,7 @@ export default function ProductGallery({ product }: { product: Product }) {
               onClick={() => setSelectedImage(index)}
               className={`relative aspect-square rounded-xl border-2 overflow-hidden transition-all ${
                 selectedImage === index
-                  ? 'border-orange-600 ring-2 ring-orange-600/20'
+                  ? 'border-[#FF3C00] ring-2 ring-[#FF3C00]/20'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >

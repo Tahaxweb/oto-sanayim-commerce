@@ -37,11 +37,11 @@ export default async function ProductDetailPage({
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-orange-600 transition-colors">Ana Sayfa</Link>
+            <Link href="/" className="hover:text-[#FF3C00] transition-colors">Ana Sayfa</Link>
             <i className="ri-arrow-right-s-line text-gray-400" />
-            <Link href="/urunler" className="hover:text-orange-600 transition-colors">Ürünler</Link>
+            <Link href="/urunler" className="hover:text-[#FF3C00] transition-colors">Ürünler</Link>
             <i className="ri-arrow-right-s-line text-gray-400" />
-            <Link href={`/urunler?kategori=${product.kategori}`} className="hover:text-orange-600 transition-colors">
+            <Link href={`/urunler?kategori=${product.kategori}`} className="hover:text-[#FF3C00] transition-colors">
               {product.kategori}
             </Link>
             <i className="ri-arrow-right-s-line text-gray-400" />

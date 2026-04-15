@@ -96,7 +96,7 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
 
       {/* Fiyat */}
       <div className="flex items-baseline gap-3">
-        <span className="text-4xl font-bold text-orange-600">
+        <span className="text-4xl font-bold text-[#FF3C00]">
           {product.fiyat.toLocaleString('tr-TR')} ₺
         </span>
         <span className="text-sm text-gray-500">KDV Dahil</span>
@@ -105,7 +105,7 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
       {/* Araç Bilgisi */}
       <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
         <div className="flex items-center gap-2 text-gray-700">
-          <i className="ri-car-line text-xl text-orange-600"></i>
+          <i className="ri-car-line text-xl text-[#FF3C00]"></i>
           <div>
             <p className="text-sm text-gray-500">Uyumlu Araç</p>
             <p className="font-semibold">{product.marka} {product.model}</p>
@@ -182,15 +182,15 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
       {/* Güven Badgeleri */}
       <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100">
         <div className="text-center">
-          <i className="ri-shield-check-line text-2xl text-orange-600 mb-1"></i>
+          <i className="ri-shield-check-line text-2xl text-[#FF3C00] mb-1"></i>
           <p className="text-xs text-gray-600 font-medium">Güvenli Ödeme</p>
         </div>
         <div className="text-center">
-          <i className="ri-truck-line text-2xl text-orange-600 mb-1"></i>
+          <i className="ri-truck-line text-2xl text-[#FF3C00] mb-1"></i>
           <p className="text-xs text-gray-600 font-medium">Hızlı Kargo</p>
         </div>
         <div className="text-center">
-          <i className="ri-customer-service-2-line text-2xl text-orange-600 mb-1"></i>
+          <i className="ri-customer-service-2-line text-2xl text-[#FF3C00] mb-1"></i>
           <p className="text-xs text-gray-600 font-medium">7/24 Destek</p>
         </div>
       </div>

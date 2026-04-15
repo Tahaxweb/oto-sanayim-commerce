@@ -13,7 +13,7 @@ export default function ProductSpecs({ product }: { product: Product }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-12">
       <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-        <i className="ri-settings-4-line text-orange-600"></i>
+        <i className="ri-settings-4-line text-[#FF3C00]"></i>
         Teknik Özellikler
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

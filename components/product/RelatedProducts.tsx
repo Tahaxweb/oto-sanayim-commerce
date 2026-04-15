@@ -7,12 +7,12 @@ export default function RelatedProducts({ products }: { products: Product[] }) {
     <div className="mt-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <i className="ri-recycle-line text-orange-600"></i>
+          <i className="ri-recycle-line text-[#FF3C00]"></i>
           İlgili Ürünler
         </h2>
         <Link
           href="/urunler"
-          className="text-sm font-medium text-orange-600 hover:text-orange-700 flex items-center gap-1"
+          className="text-sm font-medium text-[#FF3C00] hover:text-orange-700 flex items-center gap-1"
         >
           Tümünü Gör <i className="ri-arrow-right-line"></i>
         </Link>

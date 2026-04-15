@@ -27,13 +27,13 @@ function Hero() {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Content */}
       <div className="max-w-5xl w-full space-y-10 text-center">
         {/* Badge */}
         <div className="flex justify-center animate-in fade-in duration-700">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full text-sm text-orange-700 font-medium">
-            <i className="ri-flashlight-fill text-orange-500"></i>
+            <i className="ri-flashlight-fill text-[#FF3C00]"></i>
             Türkiye'nin en hızlı yedek parça platformu
           </div>
         </div>
@@ -84,7 +84,7 @@ function Hero() {
                     setSelectedBrand(e.target.value)
                     setSelectedModel('')
                   }}
-                  className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-orange-500 focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all ${
+                  className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-[#FF3C00] focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all ${
                     selectedBrand ? 'text-gray-900' : 'text-gray-500'
                   }`}
                 >
@@ -111,7 +111,7 @@ function Hero() {
                   value={selectedModel}
                   onChange={(e) => setSelectedModel(e.target.value)}
                   disabled={!selectedBrand}
-                  className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-orange-500 focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-50 ${
+                  className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-[#FF3C00] focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-50 ${
                     selectedModel ? 'text-gray-900' : 'text-gray-500'
                   }`}
                 >

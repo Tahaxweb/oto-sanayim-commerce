@@ -99,7 +99,7 @@ export default function SidebarFilters({
               <h2 className="text-lg font-bold">Filtreler</h2>
               <button
                 onClick={resetFilters}
-                className="text-xs text-orange-600 hover:underline flex items-center gap-1"
+                className="text-xs text-[#FF3C00] hover:underline flex items-center gap-1"
               >
                 <i className="ri-refresh-line" />
                 Sıfırla
@@ -123,7 +123,7 @@ export default function SidebarFilters({
                     setMarka(e.target.value)
                     setModel('')
                   }}
-                  className="w-full h-12 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-base appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-full h-12 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-base appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition"
                 >
                   <option value="">Tümü</option>
                   {BRANDS.map((b) => (
@@ -144,7 +144,7 @@ export default function SidebarFilters({
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                   disabled={!marka}
-                  className="w-full h-12 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-base appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-12 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-base appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Tümü</option>
                   {marka && MODELS[marka as keyof typeof MODELS]?.map((m) => (
@@ -170,7 +170,7 @@ export default function SidebarFilters({
                     name="kategori"
                     checked={kategori === ''}
                     onChange={() => setKategori('')}
-                    className="accent-orange-600"
+                    className="accent-[#FF3C00]"
                   />
                   <span className="text-sm">Tümü</span>
                 </label>
@@ -181,7 +181,7 @@ export default function SidebarFilters({
                       name="kategori"
                       checked={kategori === cat}
                       onChange={() => setKategori(cat)}
-                      className="accent-orange-600"
+                      className="accent-[#FF3C00]"
                     />
                     <span className="text-sm">{cat}</span>
                   </label>
@@ -198,7 +198,7 @@ export default function SidebarFilters({
                   placeholder="Min (₺)"
                   value={fiyatMin || ''}
                   onChange={(e) => setFiyatMin(e.target.value ? Number(e.target.value) : 0)}
-                  className="w-1/2 h-12 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-1/2 h-12 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition"
                   min="0"
                 />
                 <input
@@ -206,7 +206,7 @@ export default function SidebarFilters({
                   placeholder="Max (₺)"
                   value={fiyatMax || ''}
                   onChange={(e) => setFiyatMax(e.target.value ? Number(e.target.value) : 10000)}
-                  className="w-1/2 h-12 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-1/2 h-12 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition"
                   min="0"
                 />
               </div>

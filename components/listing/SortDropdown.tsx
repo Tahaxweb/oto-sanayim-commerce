@@ -15,7 +15,7 @@ export default function SortDropdown({ currentSort }: { currentSort: string }) {
         <select
           value={currentSort}
           onChange={(e) => handleChange(e.target.value)}
-          className="h-10 pl-3 pr-10 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-900 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+          className="h-10 pl-3 pr-10 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-900 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition-all"
         >
           <option value="populer">Popüler</option>
           <option value="fiyat_asc">Fiyat: Artan</option>

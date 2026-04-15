@@ -32,7 +32,7 @@ export default async function ListingPage({
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-600">
-            <a href="/" className="hover:text-orange-600 transition-colors">Ana Sayfa</a>
+            <a href="/" className="hover:text-[#FF3C00] transition-colors">Ana Sayfa</a>
             <i className="ri-arrow-right-s-line text-gray-400" />
             <span className="font-medium text-gray-900">Ürünler</span>
           </nav>
