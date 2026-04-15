@@ -64,7 +64,7 @@ function Navbar() {
 
             {/* CTA */}
             <div className="hidden lg:block">
-              <Button ><b>İletişime Geç</b></Button>
+              <Button> <span className='flex items-center justify-center gap-x-2.5'> <i className="ri-whatsapp-line text-xl"></i><b>İletişime Geç</b></span></Button>
             </div>
 
             {/* MOBILE BUTTON */}
@@ -118,7 +118,7 @@ function Navbar() {
                 closeMobileMenu={closeMobileMenu}
               />
             ))}
-                <Button><b>İletişime Geç</b></Button>
+                <Button> <span className='flex items-center justify-center gap-2.5'> <i className="ri-whatsapp-line text-2xl"></i><b>İletişime Geç</b></span></Button>
           </div>
 
 
