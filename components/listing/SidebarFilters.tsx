@@ -9,9 +9,6 @@ const MODELS = {
   'Ford': ['Fiesta', 'Focus', 'Mondeo', 'Kuga', 'Transit'],
   'Volkswagen': ['Golf', 'Polo', 'Passat', 'Tiguan', 'Jetta'],
 }
-const CATEGORIES = [
-  'Motor & Şanzıman', 'Fren Sistemi', 'Elektrik & Aydınlatma', 'Karoser & Dış'
-]
 
 export default function SidebarFilters({
   initialFilters,
@@ -161,33 +158,7 @@ export default function SidebarFilters({
             </section>
 
             {/* Kategori */}
-            <section className="mb-8">
-              <h3 className="text-sm font-semibold mb-3">Kategori</h3>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="kategori"
-                    checked={kategori === ''}
-                    onChange={() => setKategori('')}
-                    className="accent-[#FF3C00]"
-                  />
-                  <span className="text-sm">Tümü</span>
-                </label>
-                {CATEGORIES.map((cat) => (
-                  <label key={cat} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="kategori"
-                      checked={kategori === cat}
-                      onChange={() => setKategori(cat)}
-                      className="accent-[#FF3C00]"
-                    />
-                    <span className="text-sm">{cat}</span>
-                  </label>
-                ))}
-              </div>
-            </section>
+           
 
             {/* Fiyat */}
             <section className="mb-8">

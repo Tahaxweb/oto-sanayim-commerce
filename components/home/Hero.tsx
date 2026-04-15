@@ -34,7 +34,7 @@ function Hero() {
         <div className="flex justify-center animate-in fade-in duration-700">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full text-sm text-orange-700 font-medium">
             <i className="ri-flashlight-fill text-[#FF3C00]"></i>
-            Türkiye'nin en hızlı yedek parça platformu
+            Türkiye'nin en hızlı revizyonlu kaliper platformu
           </div>
         </div>
 
@@ -43,7 +43,7 @@ function Hero() {
           <h1 className="font-bold text-4xl sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight">
             Aracın İçin{' '}
             <span className="relative inline-block">
-              <span className="text-[#FF3C00]">Doğru Parçayı</span>
+              <span className="text-[#FF3C00]">Doğru Kaliperi</span>
               <svg
                 className="absolute -bottom-2 left-0 w-full"
                 height="8"
@@ -63,8 +63,9 @@ function Hero() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto"> orijinal veya yan sanayi yedek parçalar arasından aracınıza <b className="text-gray-900">en uygun parçayı</b> saniyeler içinde bulun. <b className="text-gray-900">Güvenli alışveriş</b>, <b className="text-gray-900">hızlı teslimat</b>.
-          </p>
+       <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+  Türkiye'nin ilk ve tek <b className="text-gray-900">revizyonlu kaliper</b> satış platformu olarak, güvenilir ve yüksek kaliteli çözümleri kullanıcılarla buluşturuyoruz. 
+</p>
         </div>
 
         {/* Search Box */}

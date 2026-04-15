@@ -7,23 +7,7 @@ import 'remixicon/fonts/remixicon.css'
 import Button from '../ui/Button'
 
 const NAV_ITEMS = [
-  {
-    label: 'Ürünler',
-    dropdown: [
-      { label: 'Motor & Şanzıman', href: '/urunler/motor' },
-      { label: 'Fren Sistemi', href: '/urunler/fren' },
-      { label: 'Elektrik & Aydınlatma', href: '/urunler/elektrik' },
-      { label: 'Karoser & Dış', href: '/urunler/karoser' },
-    ],
-  },
-  {
-    label: 'Kurumsal',
-    dropdown: [
-      { label: 'Bayiler İçin', href: '/kurumsal/bayiler' },
-      { label: 'Servisler İçin', href: '/kurumsal/servisler' },
-      { label: 'Toptancılar', href: '/kurumsal/toptancilar' },
-    ],
-  },
+      { label: 'Kaliperler', href: '/urunler' },
     { label: 'İletişim', href: '/iletisim' },
 ]
 
