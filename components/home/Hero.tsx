@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import 'remixicon/fonts/remixicon.css'
 import Button from '../ui/Button'
+import { useRouter } from 'next/navigation'
 
 const BRANDS = [
   'Ford', 'Renault', 'Volkswagen'
@@ -14,11 +15,15 @@ const MODELS = {
 }
 
 function Hero() {
+  const router = useRouter()
   const [selectedBrand, setSelectedBrand] = useState('')
   const [selectedModel, setSelectedModel] = useState('')
 
   const handleSearch = () => {
-    console.log({ selectedBrand, selectedModel })
+    const params = new URLSearchParams()
+    if (selectedBrand) params.set('marka', selectedBrand)
+    if (selectedModel) params.set('model', selectedModel)
+    router.push(`/urunler?${params.toString()}`)
   }
 
   return (
