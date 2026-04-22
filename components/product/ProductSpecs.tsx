@@ -4,10 +4,12 @@ export default function ProductSpecs({ product }: { product: Product }) {
   const specs = [
     { label: 'Marka', value: product.marka },
     { label: 'Model', value: product.model },
-    { label: 'Kategori', value: product.kategori },
-    { label: 'Ürün Kodu', value: product.id.toUpperCase() },
-    { label: 'Garanti', value: '2 Yıl' },
-    { label: 'Menşei', value: 'Türkiye / Almanya' },
+    {
+      label: 'Ürün Kodu',
+      value: product.urunKodu?.trim() || '—',
+    },
+    { label: 'Garanti', value: product.garanti ?? '—' },
+    { label: 'Menşei', value: 'Türkiye ' },
   ]
 
   return (

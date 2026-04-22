@@ -3,10 +3,11 @@ import { Product } from '@/types/product'
 import { useMemo, useState, useEffect } from 'react'
 
 // Ürün kodu oluşturma (ProductCard'taki ile aynı)
-const generateProductCode = (product: Product): string => {
-  if (!product.kategori) return 'OS-N/A'
-  const firstChar = product.kategori.charAt(0).toUpperCase()
-  const lastChar = product.kategori.at(-1)?.toUpperCase() || ''
+const generateFallbackProductCode = (product: Product): string => {
+  const title = product.isim?.trim()
+  if (!title) return 'OS-N/A'
+  const firstChar = title.charAt(0).toLocaleUpperCase('tr-TR')
+  const lastChar = title.at(-1)?.toLocaleUpperCase('tr-TR') || ''
   const seed = product.id.toString()
   let hash = 0
   for (let i = 0; i < seed.length; i++) {
@@ -57,7 +58,13 @@ interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product, whatsappLink }: ProductInfoProps) {
-  const productCode = useMemo(() => generateProductCode(product), [product.id, product.kategori])
+  const productCode = useMemo(
+    () =>
+      product.urunKodu?.trim()
+        ? product.urunKodu.trim()
+        : generateFallbackProductCode(product),
+    [product.id, product.isim, product.urunKodu]
+  )
   const [workingStatus, setWorkingStatus] = useState(() => checkWorkingHours())
 
   // Her dakika kontrol et (opsiyonel - anlık güncelleme için)
@@ -73,18 +80,14 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
 
   return (
     <div className="space-y-6">
-      {/* Kategori Badge */}
-      <div className="flex items-center gap-2">
-        <span className="px-3 py-1 bg-orange-50 text-orange-700 text-sm font-semibold rounded-full">
-          {product.kategori}
-        </span>
-        {product.populer && (
+      {product.populer && (
+        <div className="flex items-center gap-2">
           <span className="px-3 py-1 bg-red-50 text-red-700 text-sm font-semibold rounded-full flex items-center gap-1">
             <i className="ri-fire-line"></i>
             Popüler
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Başlık */}
       <div>
@@ -150,7 +153,7 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
         {/* Telefon - sadece çalışma saatlerinde aktif */}
         {workingStatus.isAvailable ? (
           <a
-            href="tel:+905551234567"
+            href="tel:+905360142818"
             className="flex-1 flex items-center justify-center gap-2 h-12 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
           >
             <i className="ri-phone-line text-lg"></i>
@@ -169,7 +172,7 @@ export default function ProductInfo({ product, whatsappLink }: ProductInfoProps)
 
         {/* SMS - her zaman aktif */}
         <a
-          href="sms:+905551234567"
+          href="sms:+905360142818"
           className="flex-1 flex items-center justify-center gap-2 h-12 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
         >
           <i className="ri-message-3-line text-lg"></i>

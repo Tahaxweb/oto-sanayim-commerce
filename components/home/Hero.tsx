@@ -3,26 +3,63 @@ import { useState } from 'react'
 import 'remixicon/fonts/remixicon.css'
 import Button from '../ui/Button'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-const BRANDS = [
-  'Ford', 'Renault', 'Volkswagen'
-]
+type Brand = {
+  id: string;
+  name: string;
+  models: { id: string; name: string }[];
+};
 
-const MODELS = {
-  'Renault': ['Clio', 'Megane', 'Fluence', 'Talisman', 'Kadjar'],
-  'Ford': ['Fiesta', 'Focus', 'Mondeo', 'Kuga', 'Transit'],
-  'Volkswagen': ['Golf', 'Polo', 'Passat', 'Tiguan', 'Jetta'],
-}
+type Models = {
+  id: string;
+  name: string;
+  brand: { id: string; name: string };
+};
 
 function Hero() {
-  const router = useRouter()
-  const [selectedBrand, setSelectedBrand] = useState('')
-  const [selectedModel, setSelectedModel] = useState('')
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [models, setModels] = useState<Models[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch("/api/brands");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setBrands(data);
+        } else {
+          console.error("API hatası:", data);
+          setBrands([]);
+        }
+      } catch (err) {
+        console.error("Fetch hatası:", err);
+        setBrands([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  // Seçilen markaya göre modelleri filtrele
+  const filteredModels = selectedBrand
+    ? brands.find(b => b.id === selectedBrand)?.models || []
+    : [];
 
   const handleSearch = () => {
+    if (!selectedBrand || !selectedModel) return
+    const brand = brands.find((b) => b.id === selectedBrand)
+    const model = brand?.models.find((m) => m.id === selectedModel)
+    if (!brand || !model) return
     const params = new URLSearchParams()
-    if (selectedBrand) params.set('marka', selectedBrand)
-    if (selectedModel) params.set('model', selectedModel)
+    params.set('marka', brand.name)
+    params.set('model', model.name)
     router.push(`/urunler?${params.toString()}`)
   }
 
@@ -34,7 +71,7 @@ function Hero() {
         <div className="flex justify-center animate-in fade-in duration-700">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full text-sm text-orange-700 font-medium">
             <i className="ri-flashlight-fill text-[#FF3C00]"></i>
-            Türkiye'nin  revizyonlu kaliper platformu
+            Türkiye'nin revizyonlu kaliper platformu
           </div>
         </div>
 
@@ -63,9 +100,9 @@ function Hero() {
           </h1>
 
           {/* Subtitle */}
-       <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-  Türkiye'nin ilk ve tek <b className="text-gray-900">revizyonlu kaliper</b> satış platformu olarak, güvenilir ve yüksek kaliteli çözümleri kullanıcılarla buluşturuyoruz. 
-</p>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+            Türkiye'nin ilk ve tek <b className="text-gray-900">revizyonlu kaliper</b> satış platformu olarak, güvenilir ve yüksek kaliteli çözümleri kullanıcılarla buluşturuyoruz.
+          </p>
         </div>
 
         {/* Search Box */}
@@ -90,9 +127,9 @@ function Hero() {
                   }`}
                 >
                   <option value="">Marka Seçin</option>
-                  {BRANDS.map((brand) => (
-                    <option key={brand} value={brand}>
-                      {brand}
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
                     </option>
                   ))}
                 </select>
@@ -117,9 +154,9 @@ function Hero() {
                   }`}
                 >
                   <option value="">Model Seçin</option>
-                  {selectedBrand && MODELS[selectedBrand as keyof typeof MODELS]?.map((model) => (
-                    <option key={model} value={model}>
-                      {model}
+                  {filteredModels.map((model) => (
+                    <option key={model.id} value={model.id}>
+                      {model.name}
                     </option>
                   ))}
                 </select>

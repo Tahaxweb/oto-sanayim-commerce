@@ -7,32 +7,65 @@ type Brand = {
   models: { id: string }[];
 };
 
+type Models = {
+  id: string;
+  name: string;
+  brand: { id: string; name: string };
+};
+
+
 export default function AdminPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [models, setModels] = useState<Models[]>([]);
+  const [productCount, setProductCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchBrands = async () => {
-    try {
-      const res = await fetch("/api/brands");
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setBrands(data);
-      } else {
-        console.error("API hatası:", data);
-        setBrands([]);
-      }
-    } catch (err) {
-      console.error("Fetch hatası:", err);
-      setBrands([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchBrands();
-  }, []);
+    let cancelled = false;
 
+    async function loadDashboard() {
+      setLoading(true);
+      try {
+        const [brandsRes, modelsRes, countRes] = await Promise.all([
+          fetch("/api/brands"),
+          fetch("/api/models"),
+          fetch("/api/products/count"),
+        ]);
+
+        const brandsData = await brandsRes.json();
+        const modelsData = await modelsRes.json();
+        const countJson = await countRes.json().catch(() => ({}));
+
+        if (cancelled) return;
+
+        setBrands(Array.isArray(brandsData) ? brandsData : []);
+        setModels(Array.isArray(modelsData) ? modelsData : []);
+
+        const n =
+          countRes.ok &&
+          typeof countJson === "object" &&
+          countJson !== null &&
+          typeof (countJson as { count?: unknown }).count === "number"
+            ? (countJson as { count: number }).count
+            : null;
+        setProductCount(n);
+      } catch (err) {
+        console.error("Dashboard verisi yüklenemedi:", err);
+        if (!cancelled) {
+          setBrands([]);
+          setModels([]);
+          setProductCount(null);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadDashboard();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   return (
     <div className="min-h-screen p-8">
       <h1 className="text-3xl font-bold">Admin Paneli</h1>
@@ -52,13 +85,25 @@ export default function AdminPage() {
         <div className="bg-white p-4 rounded-lg border border-slate-200">
           <h2 className="text-xl font-semibold">Model Sayısı</h2>
           <p className="text-3xl font-bold mt-2">
-            567 <span className="text-base text-gray-600 font-medium">Adet</span>
+            {loading ? (
+              <span className="text-gray-300 animate-pulse">—</span>
+            ) : (
+              models.length
+            )}{" "}
+            <span className="text-base text-gray-600 font-medium">Adet</span>
           </p>
         </div>
         <div className="bg-white p-4 rounded-lg border border-slate-200">
           <h2 className="text-xl font-semibold">Ürün Sayısı</h2>
           <p className="text-3xl font-bold mt-2">
-            89 <span className="text-base text-gray-600 font-medium">Adet</span>
+            {loading ? (
+              <span className="text-gray-300 animate-pulse">—</span>
+            ) : productCount !== null ? (
+              productCount
+            ) : (
+              <span className="text-gray-400 text-xl">—</span>
+            )}{" "}
+            <span className="text-base text-gray-600 font-medium">Adet</span>
           </p>
         </div>
       </div>

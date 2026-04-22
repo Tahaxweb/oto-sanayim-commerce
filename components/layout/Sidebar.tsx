@@ -35,10 +35,14 @@ export default function Sidebar({
   },
   {
     name: "Ürünler",
-    href: "/admin/blog",
+    href: "/admin/urunler",
     icon: "ri-shopping-bag-3-line", // ürün / satış
   },
-
+  {
+    name: "Hesap oluştur",
+    href: "/admin/kayit",
+    icon: "ri-user-add-line",
+  },
 ];
 
   return (

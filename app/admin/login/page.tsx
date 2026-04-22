@@ -61,7 +61,7 @@ export default function LoginPage() {
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-        <Button onClick={handleLogin} disabled={loading}>
+        <Button onClick={handleLogin} disabled={loading} fullWidth>
           {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
         </Button>
       </div>

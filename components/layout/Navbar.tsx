@@ -7,7 +7,7 @@ import 'remixicon/fonts/remixicon.css'
 import Button from '../ui/Button'
 
 const NAV_ITEMS = [
-      { label: 'Kaliperler', href: '/urunler' },
+      { label: 'Ürünler', href: '/urunler' },
     { label: 'İletişim', href: '/iletisim' },
 ]
 

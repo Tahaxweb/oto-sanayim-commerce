@@ -1,9 +1,7 @@
 import localFont from 'next/font/local'
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-
+import { EdgeStoreProvider } from '@/lib/edgestore';
 const satoshi = localFont({
   src: [
     { path: './fonts/Satoshi-Variable.woff2',       style: 'normal' },
@@ -31,8 +29,9 @@ export default function RootLayout({
       className={`${satoshi.variable} h-full antialiased`}
     >
       <body className={`${satoshi.className}`}>
-      
+       <EdgeStoreProvider>
         {children}
+        </EdgeStoreProvider>
       </body>
     </html>
   );

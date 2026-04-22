@@ -1,26 +1,39 @@
+import Link from 'next/link'
 import { Product } from '@/types/product'
 import ProductCard from './ProductCard'
-import Button from '../ui/Button'
 
-export default function ProductGrid({ products }: { products: Product[] }) {
+export default function ProductGrid({
+  products,
+  filtersActive = false,
+}: {
+  products: Product[]
+  filtersActive?: boolean
+}) {
   if (products.length === 0) {
+    const title = filtersActive
+      ? 'Filtrelerinize uygun ürün bulunamadı'
+      : 'Listelenecek ürün yok'
+    const description = filtersActive
+      ? 'Seçtiğiniz filtrelere uygun ürün bulunamadı. Kriterleri değiştirmeyi veya filtreleri sıfırlamayı deneyebilirsiniz.'
+      : 'Şu anda gösterilecek ürün bulunmuyor.'
+
     return (
       <div className="flex flex-col items-center justify-center py-32 px-6 border-2 border-dashed border-gray-200 rounded-3xl bg-white">
         <div className="relative">
           <div className="absolute inset-0 bg-orange-100/50 rounded-full blur-3xl" />
           <i className="ri-search-line text-6xl text-gray-300 mb-6 relative" />
         </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Sonuç Bulunamadı</h3>
-        <p className="text-gray-600 text-center max-w-sm mb-6">
-          Aradığınız kriterlere uygun ürün bulunamadı. Filtreleri değiştirerek tekrar deneyin.
-        </p>
-        <Button
-          onClick={() => window.location.href = '/urunler'}
-         
-        >
-          <i className="ri-refresh-line" />
-          Filtreleri Sıfırla
-        </Button>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+        <p className="text-gray-600 text-center max-w-sm mb-6">{description}</p>
+        {filtersActive && (
+          <Link
+            href="/urunler"
+            className="inline-flex items-center justify-center gap-2 font-medium px-4 py-2.5 text-sm rounded-xl bg-[#FF3C00] text-white hover:bg-[#e63600] transition-all duration-200"
+          >
+            <i className="ri-refresh-line" />
+            Filtreleri sıfırla
+          </Link>
+        )}
       </div>
     )
   }

@@ -1,13 +1,9 @@
-import Sidebar from "@/components/layout/Sidebar"
+import AdminLayoutShell from '@/components/layout/AdminLayoutShell'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div >
-        <Sidebar>{children}</Sidebar>
-    </div>
-  )
+  return <AdminLayoutShell>{children}</AdminLayoutShell>
 }

@@ -6,11 +6,12 @@ export default function ProductGallery({ product }: { product: Product }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [imageError, setImageError] = useState(false)
 
-  // Mock: Birden fazla görsel varsa (şimdilik tek görsel)
-  // Boş string kontrolü ekledik
-  const images = product.resim 
-    ? [product.resim, product.resim, product.resim, product.resim]
-    : []
+  const images =
+    product.resimler && product.resimler.length > 0
+      ? product.resimler
+      : product.resim
+        ? [product.resim]
+        : []
 
   const hasValidImage = images.length > 0 && images[selectedImage]
 
@@ -44,7 +45,7 @@ export default function ProductGallery({ product }: { product: Product }) {
       </div>
 
       {/* Thumbnail'ler - sadece görsel varsa göster */}
-      {images.length > 0 && (
+      {images.length > 1 && (
         <div className="grid grid-cols-4 gap-3">
           {images.map((img, index) => (
             <button

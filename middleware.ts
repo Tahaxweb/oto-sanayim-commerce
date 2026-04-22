@@ -4,7 +4,8 @@ import * as jose from "jose";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname === "/admin/login") {
+  /* /admin/kayit: cookie kontrolü layout’ta (ilk kurulumda admin yokken tek kayıt için açık) */
+  if (pathname === "/admin/login" || pathname === "/admin/kayit") {
     return NextResponse.next();
   }
 

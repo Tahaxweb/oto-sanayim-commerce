@@ -12,8 +12,11 @@ export async function GET() {
     });
     return NextResponse.json(models);
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Modeller alınamadı." }, { status: 500 });
+    console.error("Models GET error:", err);
+    return NextResponse.json(
+      { error: "Modeller alınamadı." },
+      { status: 500 }
+    );
   }
 }
 
@@ -21,15 +24,27 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const { name, brandId } = await req.json();
+
     if (!name?.trim() || !brandId) {
-      return NextResponse.json({ error: "name ve brandId zorunludur." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Model adı ve marka zorunludur." },
+        { status: 400 }
+      );
     }
+
     const model = await prisma.model.create({
       data: { name: name.trim(), brandId },
+      include: {
+        brand: { select: { id: true, name: true } }, // ✅ Eklendi
+      },
     });
+
     return NextResponse.json(model, { status: 201 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Model oluşturulamadı." }, { status: 500 });
+    console.error("Model POST error:", err);
+    return NextResponse.json(
+      { error: "Model oluşturulamadı." },
+      { status: 500 }
+    );
   }
 }

@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Product } from '@/types/product'
 import { useMemo, useState } from 'react'
@@ -9,12 +8,12 @@ interface ProductCardProps {
 }
 
 // Yardımcı fonksiyon: ID tabanlı belirgin ama tutarlı sayı üretir
-const generateProductCode = (product: Product): string => {
-  if (!product.kategori) return 'OS-N/A'
-  
-  // Kategori ilk ve son harfler (Büyük harf)
-  const firstChar = product.kategori.charAt(0).toUpperCase()
-  const lastChar = product.kategori.at(-1)?.toUpperCase() || ''
+const generateFallbackProductCode = (product: Product): string => {
+  const title = product.isim?.trim()
+  if (!title) return 'OS-N/A'
+
+  const firstChar = title.charAt(0).toLocaleUpperCase('tr-TR')
+  const lastChar = title.at(-1)?.toLocaleUpperCase('tr-TR') || ''
   
   // ID'yi kullanarak deterministik "random" 5 haneli sayı üretiyoruz
   // Her ürün için sabit kalır, yeniden yüklemede değişmez
@@ -31,7 +30,13 @@ const generateProductCode = (product: Product): string => {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [imageError, setImageError] = useState(false)
-  const productCode = useMemo(() => generateProductCode(product), [product.id, product.kategori])
+  const productCode = useMemo(
+    () =>
+      product.urunKodu?.trim()
+        ? product.urunKodu.trim()
+        : generateFallbackProductCode(product),
+    [product.id, product.isim, product.urunKodu]
+  )
 
   return (
     <Link

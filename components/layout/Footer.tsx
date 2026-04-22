@@ -48,13 +48,16 @@ export default function Footer() {
             </div>
 
             <div className="text-center lg:text-right text-sm space-y-1">
-              <a href="tel:+905551234567" className="block hover:text-white transition-colors">
-                +90 555 123 45 67
+              <a href="tel:+905360142818" className="block hover:text-white transition-colors">
+                +90 536 014 28 18
               </a>
               <a href="mailto:info@otosanayim.com" className="block hover:text-white transition-colors">
                 info@otosanayim.com
               </a>
-              <p className="text-gray-500 pt-1">Keçiören, Ankara</p>
+              <p className="text-gray-500 pt-1 max-w-[240px] mx-auto lg:mx-0">
+                Fulya, Yeşilçimen Sokağı No:12<br />
+                34394, 34360 Şişli/İstanbul
+              </p>
             </div>
           </div>
         </div>

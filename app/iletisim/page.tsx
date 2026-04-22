@@ -1,20 +1,36 @@
 import Image from 'next/image'
 
+/** Mağaza adresi – site genelinde tutarlı */
+const STORE_ADDRESS_SHORT =
+  'Fulya, Yeşilçimen Sokağı No:12 34394, 34360 Şişli/İstanbul'
+
+const MAPS_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  'Fulya Yeşilçimen Sokağı No:12, Şişli, İstanbul'
+)}`
+
+/** Harita iframe (Google Maps arama gömülü görünüm) */
+const MAPS_EMBED_URL =
+  'https://maps.google.com/maps?q=' +
+  encodeURIComponent(
+    'Yeşilçimen Sokağı No:12, Fulya, Şişli, İstanbul'
+  ) +
+  '&hl=tr&z=17&output=embed'
+
 const CONTACT_METHODS = [
   {
     icon: 'ri-phone-line',
     title: 'Telefon',
     description: 'Pazartesi - Cumartesi, 10:00 - 17:00',
-    value: '+90 555 123 45 67',
-    href: 'tel:+905551234567',
+    value: '+90 536 014 28 18',
+    href: 'tel:+905360142818',
     color: 'orange',
   },
   {
     icon: 'ri-whatsapp-line',
     title: 'WhatsApp',
     description: '7/24 mesaj atabilirsiniz',
-    value: '+90 555 123 45 67',
-    href: 'https://wa.me/905551234567',
+    value: '+90 536 014 28 18',
+    href: 'https://wa.me/905360142818',
     color: 'orange',
   },
   {
@@ -29,8 +45,8 @@ const CONTACT_METHODS = [
     icon: 'ri-map-pin-line',
     title: 'Adres',
     description: 'Mağazamızı ziyaret edin',
-    value: 'Atatürk Mah. Sanayi Cad. No:123, Keçiören/Ankara',
-    href: 'https://maps.google.com/?q=Ankara',
+    value: STORE_ADDRESS_SHORT,
+    href: MAPS_SEARCH_URL,
     color: 'orange',
   },
 ]
@@ -66,7 +82,7 @@ const FAQ_ITEMS = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-gray-50/50 pt-16">
       {/* Hero Section */}
       <div className="bg-[#FF3C00] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-42">
@@ -109,7 +125,7 @@ export default function ContactPage() {
             <div className="bg-white rounded-2xl overflow-hidden ">
               <div className="h-96 sm:h-[500px] bg-gray-100">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3059.0287457609547!2d32.8597419!3d39.9333635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMznCsDU2JzAwLjEiTiAzMsKwNTEnMzUuMSJF!5e0!3m2!1str!2str!4v1234567890"
+                  src={MAPS_EMBED_URL}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -130,12 +146,11 @@ export default function ContactPage() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Mağaza Adresimiz</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Atatürk Mahallesi, Sanayi Caddesi No:123<br />
-                    Keçiören / Ankara<br />
-                    Posta Kodu: 06010
+                    Fulya, Yeşilçimen Sokağı No:12<br />
+                    34394, 34360 Şişli/İstanbul
                   </p>
                   <a
-                    href="https://maps.google.com/?q=Ankara"
+                    href={MAPS_SEARCH_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-4 text-orange-600 hover:text-orange-700 font-semibold text-sm"
@@ -230,7 +245,7 @@ export default function ContactPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="https://wa.me/905551234567"
+              href="https://wa.me/905360142818"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-600 font-semibold rounded-xl hover:bg-orange-50 transition-colors"
             >
               <i className="ri-whatsapp-line text-xl"></i>
