@@ -30,10 +30,9 @@ export default function RootLayout({
       lang="tr"
       className={`${satoshi.variable} h-full antialiased`}
     >
-      <body className={`${satoshi.className} min-h-full flex flex-col`}>
-        <Navbar/>
+      <body className={`${satoshi.className}`}>
+      
         {children}
-        <Footer/>
       </body>
     </html>
   );
