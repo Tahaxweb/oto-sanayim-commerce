@@ -18,6 +18,11 @@ type ApiBrand = {
   models: { id: string; name: string }[]
 }
 
+type ApiCategory = {
+  id: string
+  name: string
+}
+
 function syncPriceMaxFromInitial(v: number | undefined) {
   if (v == null || Number.isNaN(v)) return 10000
   return v
@@ -29,6 +34,7 @@ export default function SidebarFilters({
   initialFilters: {
     marka?: string
     model?: string
+    kategori?: string
     fiyatMin?: number
     fiyatMax?: number
   }
@@ -38,10 +44,12 @@ export default function SidebarFilters({
 
   const [brands, setBrands] = useState<ApiBrand[]>([])
   const [allModels, setAllModels] = useState<ApiModel[]>([])
+  const [categories, setCategories] = useState<ApiCategory[]>([])
   const [loadError, setLoadError] = useState('')
 
   const [marka, setMarka] = useState(initialFilters.marka || '')
   const [model, setModel] = useState(initialFilters.model || '')
+  const [kategori, setKategori] = useState(initialFilters.kategori || '')
   const [fiyatMin, setFiyatMin] = useState(
     initialFilters.fiyatMin && initialFilters.fiyatMin > 0 ? initialFilters.fiyatMin : 0
   )
@@ -54,15 +62,26 @@ export default function SidebarFilters({
     let cancelled = false
     ;(async () => {
       try {
-        const [brRes, moRes] = await Promise.all([
+        const [brRes, moRes, catRes] = await Promise.all([
           fetch('/api/brands'),
           fetch('/api/models'),
+          fetch('/api/categories'),
         ])
         const bJson = await brRes.json()
         const mJson = await moRes.json()
+        const cJson = await catRes.json()
         if (cancelled) return
         if (Array.isArray(bJson)) setBrands(bJson)
         if (Array.isArray(mJson)) setAllModels(mJson)
+        if (Array.isArray(cJson)) {
+          setCategories(
+            cJson
+              .map((c: { id: string; name: string }) => ({ id: c.id, name: c.name }))
+              .sort((a: ApiCategory, b: ApiCategory) =>
+                a.name.localeCompare(b.name, 'tr')
+              )
+          )
+        }
       } catch {
         if (!cancelled) setLoadError('Filtre verileri yüklenemedi')
       }
@@ -75,6 +94,7 @@ export default function SidebarFilters({
   useEffect(() => {
     setMarka(initialFilters.marka || '')
     setModel(initialFilters.model || '')
+    setKategori(initialFilters.kategori || '')
     setFiyatMin(
       initialFilters.fiyatMin != null && initialFilters.fiyatMin > 0
         ? initialFilters.fiyatMin
@@ -84,6 +104,7 @@ export default function SidebarFilters({
   }, [
     initialFilters.marka,
     initialFilters.model,
+    initialFilters.kategori,
     initialFilters.fiyatMin,
     initialFilters.fiyatMax,
   ])
@@ -121,6 +142,9 @@ export default function SidebarFilters({
     if (model.trim()) params.set('model', model.trim())
     else params.delete('model')
 
+    if (kategori.trim()) params.set('kategori', kategori.trim())
+    else params.delete('kategori')
+
     if (fiyatMin > 0) params.set('fiyatMin', String(fiyatMin))
     else params.delete('fiyatMin')
 
@@ -135,6 +159,7 @@ export default function SidebarFilters({
   const resetFilters = () => {
     setMarka('')
     setModel('')
+    setKategori('')
     setFiyatMin(0)
     setFiyatMax(10000)
     router.push('/urunler')
@@ -240,6 +265,29 @@ export default function SidebarFilters({
                   İsterseniz marka seçmeden tüm modellerden seçebilirsiniz
                 </p>
               )}
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-sm font-semibold mb-3">Kategori</h3>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 text-gray-500">
+                  <i className="ri-price-tag-3-line text-lg" />
+                </div>
+                <select
+                  value={kategori}
+                  onChange={(e) => setKategori(e.target.value)}
+                  disabled={categories.length === 0}
+                  className="w-full h-12 pl-10 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-base appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FF3C00] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="">Tümü</option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.name}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <i className="ri-arrow-down-s-line absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-lg" />
+              </div>
             </section>
 
             <section className="mb-8">

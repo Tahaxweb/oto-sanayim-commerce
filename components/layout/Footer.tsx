@@ -18,11 +18,11 @@ export default function Footer() {
           {/* Logo & Slogan */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
             <Image
-              src="/images/logos/orange-white-logo.svg"
-              alt="OtoSanayim"
+              src="/images/logos/new-logo.png"
+              alt="Öztürk Fren Yedek Parça"
               width={170}
               height={55}
-              className="mb-4"
+              className="mb-4 h-25 w-auto object-contain max-w-[200px]"
             />
             <p className="text-sm max-w-xs text-gray-500">
               Kaliteli kaliper çözümleriyle yanınızdayız.
@@ -66,7 +66,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/5 bg-black/40 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>© {currentYear} OtoSanayim. Tüm hakları saklıdır.</p>
+          <p>© {currentYear} Öztürk Fren Yedek Parça. Tüm hakları saklıdır.</p>
           
           <div className="flex gap-6">
             <Link href="/gizlilik" className="hover:text-gray-300 transition-colors">

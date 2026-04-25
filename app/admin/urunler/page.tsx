@@ -22,6 +22,11 @@ type Model = {
   brandId: string;
 };
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 type Product = {
   id: string;
   productCode?: string | null;
@@ -33,12 +38,15 @@ type Product = {
   warranty?: WarrantyValue;
   brandId: string;
   modelId: string;
+  categoryId: string;
+  category: { id: string; name: string };
 };
 
 export default function AdminProducts() {
   const { edgestore } = useEdgeStore();
   const [brands, setBrands] = useState<Brand[]>([]);
   const [models, setModels] = useState<Model[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -51,6 +59,7 @@ export default function AdminProducts() {
     price: '',
     brandId: '',
     modelId: '',
+    categoryId: '',
     popular: false,
     warranty: 'NONE' as WarrantyValue,
   });
@@ -66,6 +75,7 @@ export default function AdminProducts() {
   useEffect(() => {
     fetchBrands();
     fetchModels();
+    fetchCategories();
     fetchProducts();
   }, []);
 
@@ -86,6 +96,21 @@ export default function AdminProducts() {
       setModels(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Modeller yüklenemedi:', err);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      const list = Array.isArray(data) ? data : [];
+      setCategories(
+        [...list].sort((a, b) =>
+          a.name.localeCompare(b.name, 'tr', { sensitivity: 'base' })
+        )
+      );
+    } catch (err) {
+      console.error('Kategoriler yüklenemedi:', err);
     }
   };
 
@@ -136,6 +161,14 @@ export default function AdminProducts() {
       alert('Tüm alanları doldurunuz');
       return;
     }
+    if (!formData.categoryId.trim()) {
+      alert('Kategori seçiniz');
+      return;
+    }
+    if (categories.length === 0) {
+      alert('Önce en az bir kategori oluşturun (Kategoriler menüsü).');
+      return;
+    }
 
     if (uploadedImageUrls.length === 0) {
       alert('En az bir ürün görseli ekleyin');
@@ -152,6 +185,7 @@ export default function AdminProducts() {
         warranty: formData.warranty,
         brandId: formData.brandId,
         modelId: formData.modelId,
+        categoryId: formData.categoryId,
       };
 
       const url = editingId ? `/api/products/${editingId}` : '/api/products';
@@ -204,6 +238,7 @@ export default function AdminProducts() {
       price: product.price.toString(),
       brandId: product.brandId,
       modelId: product.modelId,
+      categoryId: product.categoryId,
       popular: product.popular,
       warranty: product.warranty ?? 'NONE',
     });
@@ -245,6 +280,7 @@ export default function AdminProducts() {
       price: '',
       brandId: '',
       modelId: '',
+      categoryId: '',
       popular: false,
       warranty: 'NONE',
     });
@@ -404,6 +440,29 @@ export default function AdminProducts() {
                   </select>
                 </div>
 
+                {/* Kategori */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Kategori <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.categoryId}
+                    onChange={(e) =>
+                      setFormData({ ...formData, categoryId: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF3C00] focus:border-transparent outline-none"
+                  >
+                    <option value="" disabled>
+                      Kategori seçin
+                    </option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Garanti */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -542,6 +601,10 @@ export default function AdminProducts() {
                       <h3 className="font-semibold text-gray-900 mb-1 truncate">
                         {product.name}
                       </h3>
+                      <p className="text-xs text-slate-500 mb-1">
+                        <i className="ri-price-tag-3-line align-middle" />{' '}
+                        {product.category.name}
+                      </p>
                       <p className="text-lg font-bold text-[#FF3C00] mb-1">
                         ₺{product.price.toFixed(2)}
                       </p>

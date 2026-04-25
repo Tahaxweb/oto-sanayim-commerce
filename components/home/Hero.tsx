@@ -11,40 +11,53 @@ type Brand = {
   models: { id: string; name: string }[];
 };
 
-type Models = {
+type Category = {
   id: string;
   name: string;
-  brand: { id: string; name: string };
 };
 
 function Hero() {
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [models, setModels] = useState<Models[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    const fetchBrands = async () => {
+    const load = async () => {
       try {
-        const res = await fetch("/api/brands");
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setBrands(data);
+        const [brRes, catRes] = await Promise.all([
+          fetch("/api/brands"),
+          fetch("/api/categories"),
+        ]);
+        const bJson = await brRes.json();
+        const cJson = await catRes.json();
+        if (Array.isArray(bJson)) {
+          setBrands(bJson);
         } else {
-          console.error("API hatası:", data);
+          console.error("API hatası:", bJson);
           setBrands([]);
+        }
+        if (Array.isArray(cJson)) {
+          setCategories(
+            cJson
+              .map((c: { id: string; name: string }) => ({ id: c.id, name: c.name }))
+              .sort((a: Category, b: Category) =>
+                a.name.localeCompare(b.name, "tr")
+              )
+          );
+        } else {
+          setCategories([]);
         }
       } catch (err) {
         console.error("Fetch hatası:", err);
         setBrands([]);
-      } finally {
-        setLoading(false);
+        setCategories([]);
       }
     };
 
-    fetchBrands();
+    load();
   }, []);
 
   // Seçilen markaya göre modelleri filtrele
@@ -60,6 +73,10 @@ function Hero() {
     const params = new URLSearchParams()
     params.set('marka', brand.name)
     params.set('model', model.name)
+    if (selectedCategory) {
+      const cat = categories.find((c) => c.id === selectedCategory);
+      if (cat) params.set('kategori', cat.name);
+    }
     router.push(`/urunler?${params.toString()}`)
   }
 
@@ -107,8 +124,8 @@ function Hero() {
 
         {/* Search Box */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 [animation-delay:400ms]">
-          <div className="bg-white rounded-2xl border border-gray-100 p-3 max-w-xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="bg-white rounded-2xl border border-gray-100 p-3 max-w-4xl mx-auto space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:items-end">
               {/* Marka Select */}
               <div className="relative flex-1 group">
                 <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors z-10 ${
@@ -121,6 +138,7 @@ function Hero() {
                   onChange={(e) => {
                     setSelectedBrand(e.target.value)
                     setSelectedModel('')
+                    setSelectedCategory('')
                   }}
                   className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-[#FF3C00] focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all ${
                     selectedBrand ? 'text-gray-900' : 'text-gray-500'
@@ -147,7 +165,11 @@ function Hero() {
                 </div>
                 <select
                   value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={(e) => {
+                    const v = e.target.value
+                    setSelectedModel(v)
+                    if (!v) setSelectedCategory('')
+                  }}
                   disabled={!selectedBrand}
                   className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-[#FF3C00] focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-50 ${
                     selectedModel ? 'text-gray-900' : 'text-gray-500'
@@ -165,11 +187,57 @@ function Hero() {
                 }`}></i>
               </div>
 
-              {/* Search Button */}
-              <div className='sm:w-fit w-full'>
+              {/* Kategori */}
+              <div className="relative flex-1 group sm:col-span-2 lg:col-span-1">
+                <div
+                  className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors z-10 ${
+                    selectedCategory
+                      ? "text-gray-900"
+                      : "text-gray-400 group-focus-within:text-gray-900"
+                  }`}
+                >
+                  <i className="ri-price-tag-3-line text-xl"></i>
+                </div>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  disabled={
+                    categories.length === 0 ||
+                    !selectedBrand ||
+                    !selectedModel
+                  }
+                  className={`w-full font-medium h-12 pl-12 pr-10 bg-gray-50 hover:bg-gray-100 border-2 border-transparent focus:border-[#FF3C00] focus:bg-white rounded-xl text-base appearance-none cursor-pointer outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-50 ${
+                    selectedCategory ? "text-gray-900" : "text-gray-500"
+                  }`}
+                >
+                  <option value="">
+                    {categories.length === 0
+                      ? "Kategori yok"
+                      : "Kategori seçin"}
+                  </option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <i
+                  className={`ri-arrow-down-s-line absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-xl transition-colors ${
+                    selectedCategory
+                      ? "text-gray-900"
+                      : "text-gray-400 group-focus-within:text-gray-900"
+                  }`}
+                ></i>
+              </div>
+            </div>
+
+            {/* Ara — selectlerin altında, sağda */}
+            <div className="flex justify-end w-full min-w-0">
+              <div className="w-48 max-w-full">
                 <Button
                   onClick={handleSearch}
                   disabled={!selectedBrand || !selectedModel}
+                  fullWidth
                 >
                   <b>
                     <i className="ri-search-line text-xl"></i>

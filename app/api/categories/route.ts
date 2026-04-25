@@ -13,33 +13,27 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const brand = await prisma.brand.create({
+    const category = await prisma.category.create({
       data: { name: name.trim() },
-      include: {
-        models: true,
-        _count: { select: { products: true } },
-      },
+      include: { _count: { select: { products: true } } },
     });
 
-    return NextResponse.json(brand);
+    return NextResponse.json(category);
   } catch (error) {
-    console.error("Brand POST error:", error);
+    console.error("Category POST error:", error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
 
 export async function GET() {
   try {
-    const brands = await prisma.brand.findMany({
-      include: {
-        models: true,
-        _count: { select: { products: true } },
-      },
+    const categories = await prisma.category.findMany({
       orderBy: { name: "asc" },
+      include: { _count: { select: { products: true } } },
     });
-    return NextResponse.json(brands);
+    return NextResponse.json(categories);
   } catch (error) {
-    console.error("Brands GET error:", error);
+    console.error("Categories GET error:", error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

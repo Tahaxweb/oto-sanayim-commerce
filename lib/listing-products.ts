@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { apiProductToStorefront, type ApiProduct } from '@/lib/product-mapper';
 import type { Product } from '@/types/product';
 import type { ProductFilters } from '@/types/product';
-import type { Prisma } from '../prisma/db-client/client';
+import type { Prisma } from "../prisma/generated-client/client";
 
 const PAGE_SIZE = 12;
 
@@ -17,6 +17,11 @@ function buildWhere(filters: ProductFilters): Prisma.ProductWhereInput {
   if (filters.model?.trim()) {
     where.model = {
       name: { equals: filters.model.trim(), mode: 'insensitive' },
+    };
+  }
+  if (filters.kategori?.trim()) {
+    where.category = {
+      name: { equals: filters.kategori.trim(), mode: 'insensitive' },
     };
   }
 

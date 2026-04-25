@@ -26,7 +26,8 @@ export async function PATCH(req: Request, context: RouteContext) {
         ...(brandId && { brandId }),
       },
       include: {
-        brand: { select: { id: true, name: true } }, // ✅ Eklendi
+        brand: { select: { id: true, name: true } },
+        _count: { select: { products: true } },
       },
     });
 
@@ -44,6 +45,17 @@ export async function PATCH(req: Request, context: RouteContext) {
 export async function DELETE(req: Request, context: RouteContext) {
   try {
     const { id } = await context.params; // ✅ await eklendi
+
+    const productCount = await prisma.product.count({ where: { modelId: id } });
+    if (productCount > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Bu modele bağlı ürün var; silmek için önce ürünleri başka modele taşıyın veya silin.",
+        },
+        { status: 409 }
+      );
+    }
 
     await prisma.model.delete({ where: { id } });
 

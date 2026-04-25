@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "./db-client"
+  output   = "./generated-client"
 }
 
 datasource db {
@@ -48,6 +48,15 @@ model Model {
   products  Product[]
 }
 
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products  Product[]
+}
+
 model Product {
   id          String   @id @default(uuid())
   productCode String?  @unique
@@ -61,8 +70,11 @@ model Product {
   updatedAt DateTime @updatedAt
 
   brandId   String
-  brand     Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Restrict)
+
   modelId   String
-  model     Model    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  model     Model     @relation(fields: [modelId], references: [id], onDelete: Restrict)
+
+  categoryId  String
+  category      Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 }

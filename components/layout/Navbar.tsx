@@ -36,15 +36,16 @@ function Navbar() {
       {/* NAVBAR */}
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-auto">
             
             {/* LOGO */}
             <Link href="/" className="flex-shrink-0">
-              <Image 
-                src="/images/logos/primary-logo.svg" 
-                alt="Logo" 
-                width={120} 
-                height={40}
+              <Image
+                src="/images/logos/new-logo.png"
+                alt="Öztürk Fren Yedek Parça"
+                width={175}
+                height={56}
+                className="h-20 w-auto object-contain"
                 priority
               />
             </Link>
@@ -100,8 +101,14 @@ function Navbar() {
         <div className="flex flex-col h-full">
 
           {/* HEADER */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-b-gray-200 bg-white">
-            <Image src="/images/logos/primary-logo.svg" alt="Logo" width={110} height={32} />
+          <div className="flex items-center justify-between px-5 py-2 border-b border-b-gray-200 bg-white">
+            <Image
+              src="/images/logos/new-logo.png"
+              alt="Öztürk Fren Yedek Parça"
+              width={150}
+              height={48}
+              className="h-20 w-auto object-contain"
+            />
             <button onClick={closeMobileMenu}>
               <i className="ri-close-line text-2xl" />
             </button>

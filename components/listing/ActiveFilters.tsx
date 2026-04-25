@@ -6,6 +6,8 @@ export default function ActiveFilters({ filters }: { filters: ProductFilters }) 
   
   if (filters.marka) activeFilters.push({ key: 'marka', label: `Marka: ${filters.marka}` })
   if (filters.model) activeFilters.push({ key: 'model', label: `Model: ${filters.model}` })
+  if (filters.kategori)
+    activeFilters.push({ key: 'kategori', label: `Kategori: ${filters.kategori}` })
   if (filters.fiyatMin) activeFilters.push({ key: 'fiyatMin', label: `Min: ${filters.fiyatMin}₺` })
   if (filters.fiyatMax && filters.fiyatMax < 10000) {
     activeFilters.push({ key: 'fiyatMax', label: `Max: ${filters.fiyatMax}₺` })

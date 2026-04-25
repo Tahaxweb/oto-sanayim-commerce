@@ -30,6 +30,7 @@ export async function GET() {
       include: {
         brand: true,
         model: true,
+        category: { select: { id: true, name: true } },
       },
       orderBy: {
         createdAt: 'desc',
@@ -53,6 +54,26 @@ export async function POST(request: NextRequest) {
 
     const { name, price, popular, brandId, modelId } = body;
     const warranty = parseWarrantyFromBody(body.warranty);
+
+    const rawCategoryId = body.categoryId;
+    const categoryIdTrimmed =
+      rawCategoryId != null ? String(rawCategoryId).trim() : '';
+    if (!categoryIdTrimmed) {
+      return NextResponse.json(
+        { error: 'Kategori seçimi zorunludur' },
+        { status: 400 }
+      );
+    }
+    const category = await prisma.category.findUnique({
+      where: { id: categoryIdTrimmed },
+    });
+    if (!category) {
+      return NextResponse.json(
+        { error: 'Geçersiz kategori' },
+        { status: 400 }
+      );
+    }
+    const categoryId = categoryIdTrimmed;
 
     const imageUrls = normalizeProductImages(body);
     if (!imageUrls) {
@@ -99,8 +120,13 @@ export async function POST(request: NextRequest) {
         warranty,
         brandId,
         modelId,
+        categoryId,
       },
-      include: { brand: true, model: true },
+      include: {
+        brand: true,
+        model: true,
+        category: { select: { id: true, name: true } },
+      },
     });
 
     return NextResponse.json(product, { status: 201 });

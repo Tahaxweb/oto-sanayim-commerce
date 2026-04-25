@@ -2,12 +2,9 @@
 import { useEffect, useState, useRef } from "react";
 import "remixicon/fonts/remixicon.css";
 
-type Model = { id: string };
-
-type Brand = {
+type Category = {
   id: string;
   name: string;
-  models: Model[];
   _count: { products: number };
 };
 
@@ -15,7 +12,6 @@ type ApiError = {
   error: string;
 };
 
-// ─── helpers ──────────────────────────────────────────────
 async function apiFetch<T>(
   url: string,
   options?: RequestInit
@@ -41,56 +37,49 @@ async function apiFetch<T>(
   }
 }
 
-// ─── component ────────────────────────────────────────────
-export default function BrandsPage() {
-  const [brands, setBrands] = useState<Brand[]>([]);
+export default function CategorysPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Yeni marka
   const [newName, setNewName] = useState("");
   const [creating, setCreating] = useState(false);
 
-  // Düzenleme
   const [editId, setEditId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [editSaving, setEditSaving] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
 
-  // Silme
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const editInputRef = useRef<HTMLInputElement>(null);
 
-  // ── fetch ──────────────────────────────────────────────
-  const fetchBrands = async () => {
-    const { data, error } = await apiFetch<Brand[]>("/api/brands");
+  const fetchCategories = async () => {
+    const { data, error } = await apiFetch<Category[]>("/api/categories");
     if (error) {
       console.error("Fetch hatası:", error);
-      setBrands([]);
+      setCategories([]);
     } else {
-      setBrands(data ?? []);
+      setCategories(data ?? []);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchBrands();
+    fetchCategories();
   }, []);
 
-  // Edit input'a focus
   useEffect(() => {
     if (editId) {
       editInputRef.current?.focus();
     }
   }, [editId]);
 
-  // ── create ─────────────────────────────────────────────
   const handleCreate = async () => {
     const trimmed = newName.trim();
     if (!trimmed || creating) return;
 
     setCreating(true);
-    const { data, error } = await apiFetch<Brand>("/api/brands", {
+    const { data, error } = await apiFetch<Category>("/api/categories", {
       method: "POST",
       body: JSON.stringify({ name: trimmed }),
     });
@@ -98,17 +87,15 @@ export default function BrandsPage() {
     if (error) {
       alert(error);
     } else if (data) {
-      // Optimistic: listeye hemen ekle
-      setBrands((prev) => [...prev, data]);
+      setCategories((prev) => [...prev, data].sort((a, b) => a.name.localeCompare(b.name, "tr")));
       setNewName("");
     }
     setCreating(false);
   };
 
-  // ── edit başlat ────────────────────────────────────────
-  const startEdit = (brand: Brand) => {
-    setEditId(brand.id);
-    setEditName(brand.name);
+  const startEdit = (cat: Category) => {
+    setEditId(cat.id);
+    setEditName(cat.name);
     setEditError(null);
   };
 
@@ -118,17 +105,15 @@ export default function BrandsPage() {
     setEditError(null);
   };
 
-  // ── edit kaydet ────────────────────────────────────────
   const handleEdit = async (id: string) => {
     const trimmed = editName.trim();
 
-    // Değişiklik yoksa kapat
-    const currentBrand = brands.find((b) => b.id === id);
+    const current = categories.find((c) => c.id === id);
     if (!trimmed) {
       setEditError("İsim boş olamaz");
       return;
     }
-    if (currentBrand?.name === trimmed) {
+    if (current?.name === trimmed) {
       cancelEdit();
       return;
     }
@@ -136,13 +121,12 @@ export default function BrandsPage() {
     setEditSaving(true);
     setEditError(null);
 
-    const { data, error } = await apiFetch<Brand>(`/api/brands/${id}`, {
+    const { data, error } = await apiFetch<Category>(`/api/categories/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ name: trimmed }),
     });
 
     if (error) {
-      // Hata göster ama edit modundan çıkma
       setEditError(error);
       setEditSaving(false);
       editInputRef.current?.focus();
@@ -150,12 +134,10 @@ export default function BrandsPage() {
     }
 
     if (data) {
-      setBrands((prev) =>
-        prev.map((b) =>
-          b.id === id
-            ? { ...b, name: data.name, models: data.models, _count: data._count }
-            : b
-        )
+      setCategories((prev) =>
+        prev
+          .map((c) => (c.id === id ? { ...c, name: data.name, _count: data._count } : c))
+          .sort((a, b) => a.name.localeCompare(b.name, "tr"))
       );
     }
 
@@ -165,12 +147,11 @@ export default function BrandsPage() {
     setEditSaving(false);
   };
 
-  // ── delete ─────────────────────────────────────────────
   const handleDelete = async (id: string) => {
-    if (!confirm("Bu markayı silmek istediğinize emin misiniz?")) return;
+    if (!confirm("Bu kategoriyi silmek istediğinize emin misiniz?")) return;
 
     setDeletingId(id);
-    const { error } = await apiFetch(`/api/brands/${id}`, {
+    const { error } = await apiFetch(`/api/categories/${id}`, {
       method: "DELETE",
     });
 
@@ -180,21 +161,18 @@ export default function BrandsPage() {
       return;
     }
 
-    // Optimistic: listeden hemen kaldır
-    setBrands((prev) => prev.filter((b) => b.id !== id));
+    setCategories((prev) => prev.filter((c) => c.id !== id));
     setDeletingId(null);
   };
 
-  // ── render ─────────────────────────────────────────────
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Markalar</h1>
+      <h1 className="text-2xl font-bold mb-6">Kategoriler</h1>
 
-      {/* ── Yeni Marka ── */}
       <div className="flex gap-2 mb-8">
         <input
           type="text"
-          placeholder="Marka adı"
+          placeholder="Kategori adı"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleCreate()}
@@ -219,39 +197,37 @@ export default function BrandsPage() {
         </button>
       </div>
 
-      {/* ── Liste ── */}
       {loading ? (
         <p className="text-gray-400 flex items-center gap-2">
           <i className="ri-loader-4-line animate-spin" /> Yükleniyor...
         </p>
-      ) : brands.length === 0 ? (
-        <p className="text-gray-400">Henüz marka eklenmemiş.</p>
+      ) : categories.length === 0 ? (
+        <p className="text-gray-400">Henüz kategori eklenmemiş.</p>
       ) : (
         <div className="space-y-2">
-          {brands.map((brand) => {
-            const isEditing = editId === brand.id;
-            const isDeleting = deletingId === brand.id;
+          {categories.map((cat) => {
+            const isEditing = editId === cat.id;
+            const isDeleting = deletingId === cat.id;
 
             return (
               <div
-                key={brand.id}
+                key={cat.id}
                 className={`flex flex-col border rounded-xl px-4 py-3 bg-white
                             transition-opacity
                             ${isDeleting ? "opacity-40 pointer-events-none" : "border-slate-100"}`}
               >
                 <div className="flex items-center justify-between">
                   {isEditing ? (
-                    /* ── Edit modu ── */
                     <input
                       ref={editInputRef}
                       type="text"
                       value={editName}
                       onChange={(e) => {
                         setEditName(e.target.value);
-                        setEditError(null); // Yazarken hata mesajını temizle
+                        setEditError(null);
                       }}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter") handleEdit(brand.id);
+                        if (e.key === "Enter") handleEdit(cat.id);
                         if (e.key === "Escape") cancelEdit();
                       }}
                       disabled={editSaving}
@@ -265,22 +241,19 @@ export default function BrandsPage() {
                                   }`}
                     />
                   ) : (
-                    /* ── Normal mod ── */
                     <div>
-                      <p className="font-medium">{brand.name}</p>
+                      <p className="font-medium">{cat.name}</p>
                       <p className="text-xs text-gray-400">
-                        {brand.models.length} model · {brand._count.products}{" "}
-                        ürün
+                        {cat._count.products} ürün
                       </p>
                     </div>
                   )}
 
-                  {/* ── Aksiyonlar ── */}
                   <div className="flex items-center gap-1 shrink-0">
                     {isEditing ? (
                       <>
                         <button
-                          onClick={() => handleEdit(brand.id)}
+                          onClick={() => handleEdit(cat.id)}
                           disabled={editSaving}
                           title="Kaydet (Enter)"
                           className="text-green-500 hover:text-green-600 p-2
@@ -305,7 +278,7 @@ export default function BrandsPage() {
                     ) : (
                       <>
                         <button
-                          onClick={() => startEdit(brand)}
+                          onClick={() => startEdit(cat)}
                           title="Düzenle"
                           className="text-gray-400 hover:text-[#FF3C00] p-2
                                      transition-colors"
@@ -313,13 +286,13 @@ export default function BrandsPage() {
                           <i className="ri-pencil-line text-lg" />
                         </button>
                         <button
-                          onClick={() => handleDelete(brand.id)}
+                          onClick={() => handleDelete(cat.id)}
                           disabled={
-                            isDeleting || (brand._count?.products ?? 0) > 0
+                            isDeleting || cat._count.products > 0
                           }
                           title={
-                            (brand._count?.products ?? 0) > 0
-                              ? "Bu markaya bağlı ürün varken silinemez"
+                            cat._count.products > 0
+                              ? "Bu kategoride ürün varken silinemez"
                               : "Sil"
                           }
                           className="text-gray-400 hover:text-red-500 p-2
@@ -336,7 +309,6 @@ export default function BrandsPage() {
                   </div>
                 </div>
 
-                {/* ── Inline hata mesajı ── */}
                 {isEditing && editError && (
                   <p className="text-red-500 text-xs mt-1 ml-1">
                     <i className="ri-error-warning-line mr-1" />

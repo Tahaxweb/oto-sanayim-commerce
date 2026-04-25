@@ -34,6 +34,12 @@ export default function Sidebar({
     icon: "ri-layout-grid-line", // varyasyon / model yapısı
   },
   {
+    name: "Kategoriler",
+    href: "/admin/categorys",
+    icon: "ri-price-tag-3-line",
+    current: isCurrent("/admin/categorys"),
+  },
+  {
     name: "Ürünler",
     href: "/admin/urunler",
     icon: "ri-shopping-bag-3-line", // ürün / satış
@@ -95,7 +101,13 @@ export default function Sidebar({
       {/* DESKTOP SIDEBAR */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-20 lg:bg-white border-r border-r-slate-200 lg:pb-4">
         <div className="flex h-16 items-center justify-center">
-         <Image src={"/images/logos/orange-black-logo.svg"} width={40} height={40} alt="logos"/>
+         <Image
+            src="/images/logos/new-logo.png"
+            width={40}
+            height={40}
+            alt="Öztürk Fren Yedek Parça"
+            className="h-10 w-10 object-contain"
+          />
         </div>
 
         <nav className="mt-8">

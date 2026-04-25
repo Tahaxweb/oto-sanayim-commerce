@@ -12,7 +12,10 @@ export async function GET(req: NextRequest, context: RouteContext) {
 
     const brand = await prisma.brand.findUnique({
       where: { id },
-      include: { models: true },
+      include: {
+        models: true,
+        _count: { select: { products: true } },
+      },
     });
 
     if (!brand) {
@@ -60,7 +63,10 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
     const brand = await prisma.brand.update({
       where: { id }, // ✅ artık undefined değil
       data: { name: name.trim() },
-      include: { models: true },
+      include: {
+        models: true,
+        _count: { select: { products: true } },
+      },
     });
 
     return NextResponse.json(brand);
@@ -73,6 +79,17 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
 export async function DELETE(req: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params; // ✅ await eklendi
+
+    const productCount = await prisma.product.count({ where: { brandId: id } });
+    if (productCount > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Bu markaya bağlı ürün var; silmek için önce ürünleri başka markaya taşıyın veya silin.",
+        },
+        { status: 409 }
+      );
+    }
 
     await prisma.brand.delete({
       where: { id },

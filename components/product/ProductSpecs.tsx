@@ -4,6 +4,7 @@ export default function ProductSpecs({ product }: { product: Product }) {
   const specs = [
     { label: 'Marka', value: product.marka },
     { label: 'Model', value: product.model },
+    { label: 'Kategori', value: product.kategori?.trim() || '—' },
     {
       label: 'Ürün Kodu',
       value: product.urunKodu?.trim() || '—',

@@ -12,6 +12,7 @@ type Model = {
   name: string;
   brandId: string;
   brand: { id: string; name: string };
+  _count: { products: number };
 };
 
 type ApiResponse<T> = { data: T | null; error: string | null };
@@ -181,11 +182,16 @@ export default function ModelsPage() {
     }
 
     if (data) {
-      // Optimistic: listeyi güncelle
       setModels((prev) =>
         prev.map((m) =>
           m.id === id
-            ? { ...m, name: data.name, brandId: data.brandId, brand: data.brand }
+            ? {
+                ...m,
+                name: data.name,
+                brandId: data.brandId,
+                brand: data.brand,
+                _count: data._count,
+              }
             : m
         )
       );
@@ -322,7 +328,9 @@ export default function ModelsPage() {
                     /* Normal Mode */
                     <div>
                       <p className="font-medium">{model.name}</p>
-                      <p className="text-xs text-gray-400">{model.brand.name}</p>
+                      <p className="text-xs text-gray-400">
+                        {model.brand.name} · {model._count.products} ürün
+                      </p>
                     </div>
                   )}
 
@@ -365,8 +373,14 @@ export default function ModelsPage() {
                         </button>
                         <button
                           onClick={() => handleDelete(model.id)}
-                          disabled={isDeleting}
-                          title="Sil"
+                          disabled={
+                            isDeleting || (model._count?.products ?? 0) > 0
+                          }
+                          title={
+                            (model._count?.products ?? 0) > 0
+                              ? "Bu modele bağlı ürün varken silinemez"
+                              : "Sil"
+                          }
                           className="text-gray-400 hover:text-red-500 p-2
                                    disabled:opacity-50 transition-colors"
                         >

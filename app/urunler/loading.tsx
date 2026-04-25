@@ -12,12 +12,12 @@ export default function Loading() {
           {/* Logo - breathing animation */}
           <div className="relative animate-[breathe_2s_ease-in-out_infinite]">
             <Image
-              src="/images/logos/primary-logo.svg"
-              alt="OtoSanayim Logo"
+              src="/images/logos/new-logo.png"
+              alt="Öztürk Fren Yedek Parça"
               width={200}
               height={65}
               priority
-              className="drop-shadow-xl"
+              className="drop-shadow-xl h-auto w-[200px] object-contain"
             />
           </div>
         </div>

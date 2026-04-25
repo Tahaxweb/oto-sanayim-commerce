@@ -8,6 +8,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
       include: {
         brand: { select: { id: true, name: true } },
+        _count: { select: { products: true } },
       },
     });
     return NextResponse.json(models);
@@ -35,7 +36,8 @@ export async function POST(req: Request) {
     const model = await prisma.model.create({
       data: { name: name.trim(), brandId },
       include: {
-        brand: { select: { id: true, name: true } }, // ✅ Eklendi
+        brand: { select: { id: true, name: true } },
+        _count: { select: { products: true } },
       },
     });
 

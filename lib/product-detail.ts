@@ -5,7 +5,7 @@ import type { Product } from '@/types/product';
 export async function getProductById(id: string): Promise<Product | null> {
   const row = await prisma.product.findUnique({
     where: { id },
-    include: { brand: true, model: true },
+    include: { brand: true, model: true, category: true },
   });
   if (!row) return null;
   return apiProductToStorefront(row as unknown as ApiProduct);
@@ -22,7 +22,7 @@ export async function getRelatedProducts(
         name: { equals: current.marka, mode: 'insensitive' },
       },
     },
-    include: { brand: true, model: true },
+    include: { brand: true, model: true, category: true },
     take,
     orderBy: [{ popular: 'desc' }, { createdAt: 'desc' }],
   });

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "prisma generate && next dev",
+    "db:backfill:categories": "npx tsx scripts/backfill-product-categories.ts",
     "db:push": "prisma db push",
     "build": "prisma generate && next build",
     "postinstall": "prisma generate",
@@ -35,6 +36,7 @@
     "eslint-config-next": "16.2.3",
     "prisma": "^7.7.0",
     "tailwindcss": "^4",
+    "tsx": "^4.20.0",
     "typescript": "^5"
   }
 }

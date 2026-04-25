@@ -42,4 +42,7 @@ next-env.d.ts
 
 /lib/generated/prisma
 /prisma/client
-/prisma/db-client
+# Eski generate parçaları; `client.ts` canonical re-export için tutulur
+/prisma/db-client/*
+!/prisma/db-client/client.ts
+/prisma/generated-client

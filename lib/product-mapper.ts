@@ -12,6 +12,7 @@ export type ApiProduct = {
   warranty?: WarrantyValue | null;
   brand?: { name: string };
   model?: { name: string };
+  category?: { name: string } | null;
 };
 
 function galleryUrls(p: ApiProduct): string[] {
@@ -35,6 +36,7 @@ export function apiProductToStorefront(p: ApiProduct): Product {
     isim: p.name,
     marka: p.brand?.name ?? '',
     model: p.model?.name ?? '',
+    kategori: p.category?.name ?? '',
     fiyat: p.price,
     resim: imgs[0] ?? '',
     resimler: imgs,

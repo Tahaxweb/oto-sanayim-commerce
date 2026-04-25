@@ -12,11 +12,14 @@ export interface Product {
   populer?: boolean
   /** Mağaza metni; veritabanı garanti alanından türetilir */
   garanti?: string
+  kategori?: string
 }
 
 export interface ProductFilters {
   marka?: string
   model?: string
+  /** Kategori adı (URL: `kategori=`) */
+  kategori?: string
   fiyatMin?: number
   fiyatMax?: number
   siralama?: string

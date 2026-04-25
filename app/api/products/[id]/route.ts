@@ -33,6 +33,7 @@ export async function GET(
       include: {
         brand: true,
         model: true,
+        category: { select: { id: true, name: true } },
       },
     });
 
@@ -107,6 +108,26 @@ export async function PUT(
 
     const warranty = parseWarrantyFromBody(body.warranty);
 
+    const rawCategoryId = body.categoryId;
+    const categoryIdTrimmed =
+      rawCategoryId != null ? String(rawCategoryId).trim() : '';
+    if (!categoryIdTrimmed) {
+      return NextResponse.json(
+        { error: 'Kategori seçimi zorunludur' },
+        { status: 400 }
+      );
+    }
+    const categoryCheck = await prisma.category.findUnique({
+      where: { id: categoryIdTrimmed },
+    });
+    if (!categoryCheck) {
+      return NextResponse.json(
+        { error: 'Geçersiz kategori' },
+        { status: 400 }
+      );
+    }
+    const categoryId = categoryIdTrimmed;
+
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -119,10 +140,12 @@ export async function PUT(
         warranty,
         brandId,
         modelId,
+        categoryId,
       },
       include: {
         brand: true,
         model: true,
+        category: { select: { id: true, name: true } },
       },
     });
 

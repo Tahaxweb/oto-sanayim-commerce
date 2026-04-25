@@ -11,6 +11,7 @@ function filtersAreActive(f: ProductFilters): boolean {
   return !!(
     f.marka?.trim() ||
     f.model?.trim() ||
+    f.kategori?.trim() ||
     (f.fiyatMin != null && !Number.isNaN(f.fiyatMin)) ||
     (f.fiyatMax != null && !Number.isNaN(f.fiyatMax))
   )
@@ -47,6 +48,7 @@ export default async function ListingPage({
   const filters: ProductFilters = {
     marka: typeof sp.marka === 'string' ? sp.marka : undefined,
     model: typeof sp.model === 'string' ? sp.model : undefined,
+    kategori: typeof sp.kategori === 'string' ? sp.kategori : undefined,
     fiyatMin: sp.fiyatMin ? Number(sp.fiyatMin) : undefined,
     fiyatMax: sp.fiyatMax ? Number(sp.fiyatMax) : undefined,
     siralama: typeof sp.siralama === 'string' ? sp.siralama : 'populer',
@@ -95,13 +97,22 @@ export default async function ListingPage({
                         • <span className="font-medium">{filters.model}</span>
                       </span>
                     )}
+                    {filters.kategori && (
+                      <span className="text-gray-600">
+                        • <span className="font-medium">{filters.kategori}</span>
+                      </span>
+                    )}
                   </div>
                 </div>
 
                 <SortDropdown currentSort={filters.siralama || 'populer'} />
               </div>
 
-              {(filters.marka || filters.model || filters.fiyatMin || filters.fiyatMax) && (
+              {(filters.marka ||
+                filters.model ||
+                filters.kategori ||
+                filters.fiyatMin ||
+                filters.fiyatMax) && (
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <ActiveFilters filters={filters} />
                 </div>

@@ -14,8 +14,9 @@ const satoshi = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "Oto Sanayim | Pazaryeri",
-  description: "Oto Sanayim, Türkiye'nin önde gelen otomotiv yedek parça pazaryeri. Geniş ürün yelpazesi, güvenilir satıcıları ve hızlı teslimat seçenekleriyle müşterilerine kaliteli hizmet sunar.",
+  title: "Öztürk Fren Yedek Parça",
+  description:
+    "Öztürk Fren Yedek Parça: fren ve yedek parça ürünlerinde geniş ürün yelpazesi, güvenilir hizmet ve hızlı çözümler.",
 };
 
 export default function RootLayout({
