@@ -17,6 +17,9 @@ type Models = {
 export default function AdminPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [models, setModels] = useState<Models[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [productCount, setProductCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,20 +29,23 @@ export default function AdminPage() {
     async function loadDashboard() {
       setLoading(true);
       try {
-        const [brandsRes, modelsRes, countRes] = await Promise.all([
+        const [brandsRes, modelsRes, categoriesRes, countRes] = await Promise.all([
           fetch("/api/brands"),
           fetch("/api/models"),
+          fetch("/api/categories"),
           fetch("/api/products/count"),
         ]);
 
         const brandsData = await brandsRes.json();
         const modelsData = await modelsRes.json();
+        const categoriesData = await categoriesRes.json();
         const countJson = await countRes.json().catch(() => ({}));
 
         if (cancelled) return;
 
         setBrands(Array.isArray(brandsData) ? brandsData : []);
         setModels(Array.isArray(modelsData) ? modelsData : []);
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
 
         const n =
           countRes.ok &&
@@ -54,6 +60,7 @@ export default function AdminPage() {
         if (!cancelled) {
           setBrands([]);
           setModels([]);
+          setCategories([]);
           setProductCount(null);
         }
       } finally {
@@ -102,6 +109,17 @@ export default function AdminPage() {
               productCount
             ) : (
               <span className="text-gray-400 text-xl">—</span>
+            )}{" "}
+            <span className="text-base text-gray-600 font-medium">Adet</span>
+          </p>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-slate-200">
+          <h2 className="text-xl font-semibold">Kategori Sayısı</h2>
+          <p className="text-3xl font-bold mt-2">
+            {loading ? (
+              <span className="text-gray-300 animate-pulse">—</span>
+            ) : (
+              categories.length
             )}{" "}
             <span className="text-base text-gray-600 font-medium">Adet</span>
           </p>
